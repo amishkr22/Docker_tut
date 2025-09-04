@@ -1,0 +1,6 @@
+Results are according to detailed
+[TextBlob-Basic] Review #1: 'This movie is absolutely fanta...' → Positive (Score: 0.6)
+[TextBlob-Basic] Review #2: 'The product quality is terribl...' → Negative (Score: -1.0)
+[TextBlob-Basic] Review #3: 'Average service, nothing speci...' → Positive (Score: 0.1857142857142857)
+[TextBlob-Basic] Review #4: 'Amazing experience! Highly rec...' → Positive (Score: 0.45500000000000007)
+[TextBlob-Basic] Review #5: 'Worst customer support I have ...' → Negative (Score: -1.0)

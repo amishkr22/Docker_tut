@@ -1,0 +1,4 @@
+docker build -t configurable_batch_analyzer .
+
+# -e will be used to define Enviornment Variable
+docker run --rm -v "%cd%/data":/app/data -v "%cd%/output":/app/output -e OUTPUT_FORMAT=json configurable_batch_analyzer

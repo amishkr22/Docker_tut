@@ -9,7 +9,7 @@ def get_config()->dict:
         "max_reviews":int(os.getenv("MAX_REVIEWS")),
         "output_format":os.getenv("OUTPUT_FORMAT"),
         "delay":os.getenv("DELAY_SECONDS"),
-        "model_name":os.getenv("model_name")
+        "model_name":os.getenv("MODEL_NAME")
     }
 
 def analyzer(text:str)->(str,float):
@@ -33,11 +33,12 @@ def format_output(review_num, text, sentiment_label, score, config):
         return f"Review {review_num}: {sentiment_label} (Score: {score})"
 
 
-input_path = "\data\sample_text.txt"
-output_path = "\output\output_result.txt"
+input_path = "data/sample_text.txt" 
+output_path = "output/output_result.txt"
 
 with open(input_path,'r') as f:
     texts = f.readlines()
+    print(texts)
     f.close()
 
 results = []
@@ -51,7 +52,7 @@ for i,text in enumerate(texts,1):
     print(f"Processing Done for number {i} review")
 
 with open(output_path,'w') as file:
-    file.write(f"Results are according to {config['output_format']}")
+    file.write(f"Results are according to {config['output_format']}\n")
     for result in results:
         file.write(result+"\n")
     file.close()
