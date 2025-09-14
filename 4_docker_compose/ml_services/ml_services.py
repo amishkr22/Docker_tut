@@ -75,7 +75,7 @@ def analyze_sentiment(input_text:TextInput):
         "cached":False
     }
 
-    redis_client.setex(cache_key,time=3600,value=json.dumps(result))
+    redis_client.setex(cache_key,time=3600,value=json.dumps(result.model_dump()))
 
     return result
 
