@@ -39,7 +39,7 @@ def health_check():
             "redis":"disconnected"
         }
     
-@app.get("/analyze",response_model=sentiment_result)
+@app.post("/analyze",response_model=sentiment_result)
 def analyze_sentiment(input_text:TextInput):
     text = input_text.text.strip()
 
@@ -68,14 +68,13 @@ def analyze_sentiment(input_text:TextInput):
     confidence = "High" if abs(polarity) > 0.5 else "Medium" if abs(polarity) > 0.2 else "Low"
 
     result = {
-        "text":input_text,
+        "text":input_text.text,
         "sentiment":sentiment,
         "polarity":polarity,
         "confidence":confidence,
         "cached":False
     }
 
-    redis_client.setex(cache_key,time=3600,value=json.dumps(result.model_dump()))
+    redis_client.setex(cache_key,time=3600,value=json.dumps(result))
 
     return result
-
