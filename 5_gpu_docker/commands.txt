@@ -1,0 +1,11 @@
+#To start container
+docker compose up --build 
+
+#To get into a specific service and execute commands init
+docker compose exec "service_name" bash 
+
+#To see logs of a Docker compose
+docker compose logs 
+
+#To see logs of a specific service
+docker compose logs -f "service_name"  

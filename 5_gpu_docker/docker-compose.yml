@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Redis Cache Database
+  redis:
+    image: redis:7-alpine
+    container_name: sentiment-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  # FastAPI ML Service  
+  gpu-sentiment-service:
+    build: ./gpu_ml_services
+    container_name: gpu-sentiment-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Streamlit Frontend
+  streamlit-frontend:
+    build: ./streamlit  
+    container_name: sentiment-frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      gpu-sentiment-service:
+        condition: service_healthy
+    environment:
+      - API_URL=http://gpu-sentiment-service:8000
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  redis_data:
+
+networks:
+  default:
+    name: sentiment-network
